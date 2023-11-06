@@ -1,14 +1,14 @@
-# AirBnB clone - The console
-The project revolves around creating an innovative Airbnb-like platform designed to provide a streamlined and efficient property rental experience. Its core components include:
-
-1. Data Model Creation
-2. Console Interfacee
-
-## Clone the repository:
-$ git clone https://github.com/Lamia1406/AirBnB_clone.git
-$ cd AirBnB_clone
-Start the application:
-- interactive mode
+# AirBnB clone - The console  
+The project revolves around creating an innovative Airbnb-like platform designed to provide a streamlined and efficient property rental experience. Its core components include:  
+  
+1. Data Model Creation  
+2. Console Interfacee  
+  
+## Clone the repository:  
+$ git clone https://github.com/Lamia1406/AirBnB_clone.git  
+$ cd AirBnB_clone  
+## Start the application:  
+- interactive mode  
 $ ./console.py  
 (hbnb) help  
 ` Documented commands (type help <topic>):`  
