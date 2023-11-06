@@ -15,15 +15,15 @@ $ ./console.py
 ========================================  
 EOF  help  quit  
   
-(hbnb) 
-(hbnb) 
-(hbnb) quit
-$
-
-- non_interactive mode
-$ echo "help" | ./console.py  
 (hbnb)  
+(hbnb)  
+(hbnb) quit  
+$  
   
+- non_interactive mode  
+$ echo "help" | ./console.py    
+(hbnb)  
+   
 `Documented commands (type help <topic>):`  
 ========================================  
 EOF  help  quit  
