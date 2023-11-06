@@ -13,11 +13,10 @@ $ ./console.py
 (hbnb) help  
 ` Documented commands (type help <topic>):`  
 ========================================  
-EOF  help  quit  
-  
-(hbnb)  
-(hbnb)  
-(hbnb) quit  
+EOF  help  quit
+(hbnb)
+(hbnb)
+(hbnb) quit
 $  
   
 - non_interactive mode  
