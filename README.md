@@ -9,7 +9,7 @@ $ git clone https://github.com/Lamia1406/AirBnB_clone.git
 $ cd AirBnB_clone  
 ## Start the application:  
 - interactive mode  
-$ ./console.py
+$ ./console.py  
 (hbnb) help  
 ` Documented commands (type help <topic>):`  
 ========================================  
