@@ -35,7 +35,7 @@ $
 $ cat test_help | ./console.py  
 (hbnb)  
   
-documented commands (type help <topic>):  
+`Documented commands (type help <topic>):`  
 ========================================  
 EOF  help  quit  
 (hbnb)  
