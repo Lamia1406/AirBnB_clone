@@ -22,8 +22,7 @@ $
   
 - non_interactive mode  
 $ echo "help" | ./console.py    
-(hbnb)  
-   
+(hbnb)     
 ` Documented commands (type help <topic>):`  
 ========================================  
 EOF  help  quit  
@@ -34,7 +33,6 @@ help
 $  
 $ cat test_help | ./console.py  
 (hbnb)  
-  
 ` Documented commands (type help <topic>):`  
 ========================================  
 EOF  help  quit  
