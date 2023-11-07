@@ -6,13 +6,26 @@ from datetime import datetime
 
 class BaseModel:
     """defines all common attributes/methods for other classes"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """constuctor
         initializes an object when an instance of a class is created
+        Args:
+            *args = a tuple containing the positional arguments
+            **kwargs = a dictionary containing the key/value pairs
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs:
+            for key, val in kwargs.items():
+                if key == "__class__":
+                    continue
+                if key == "created_at" or key == "updated_at":
+                    dt_format = "%Y-%m-%dT%H:%M:%S.%f"
+                    setattr(self, key, datetime.strptime(val, dt_format))
+                else:
+                    setattr(self, key, val)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """returns string representation of the object"""
