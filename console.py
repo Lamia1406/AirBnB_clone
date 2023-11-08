@@ -5,6 +5,12 @@ import re
 from models import storage
 from models.base_model import BaseModel
 from shlex import split
+from models.user import User
+from models.state import State
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 def parse(arg):
@@ -34,7 +40,13 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     __classes = {
-            "BaseModel"
+            "BaseModel",
+            "User",
+            "City",
+            "Amenity",
+            "Place",
+            "State",
+            "Review"
             }
 
     def emptyline(self):
@@ -152,7 +164,7 @@ class HBNBCommand(cmd.Cmd):
         to update an instance based on his ID.
         """
         argl = parse(arg)
-        objdict = storage.all)_
+        objdict = storage.all()
 
         if len(argl) == 0:
             print("** class name missing **")
@@ -179,15 +191,15 @@ class HBNBCommand(cmd.Cmd):
         if len(argl) == 4:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             if argl[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[argl{2]])
+                valtype = type(obj.__class__.__dict__[argl[2]])
                 obj.__dict__[argl[2]] = valtype(argl[3])
             else:
                 obj.__dict__[argl[2]] = argl[3]
         elif type(eval(argl[2])) == dict:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             for k, v in eval(argl[2]).items():
-                if (k in obj.__class__.__dict__.keys() and type(
-                    obj.__class__.__dict__[k]) in {str, int, float}):
+                if (k in obj.__class__.__dict__.keys() and type
+                        (obj.__class__.__dict__[k]) in {str, int, float}):
                     valtype = type(obj.__class__.__dict__[k])
                     obj.__dict__[k] = valtype(v)
                 else:
