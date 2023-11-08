@@ -144,3 +144,28 @@ class TestFileStorage_methods(unittest.TestCase):
         city = City()
         review = Review()
         amenity = Amenity()
+        models.storage.new(basemodel)
+        models.storage.new(user)
+        models.storage.new(state)
+        models.storage.new(place)
+        models.storage.new(city)
+        models.storage.new(review)
+        models.storage.new(amenity)
+        models.storage.save()
+        models.storage.reload()
+        objs = FileStorage._Filestorage__objects
+        self.assertIn("BaseModel." + basemodel.id, objs)
+        self.assertIn("User." + user.id, objs)
+        self.assertIn("State." + state.id, objs)
+        self.assertIn("Place." + place.id, objs)
+        self.assertIn("City." + city.id, objs)
+        self.assertIn("Review." + review.id, objs)
+        self.assertIn("Amenity." + amenity.id, objs)
+
+    def test_reload_with_arg(self):
+        with self.assertRaises(TypeError):
+            models.storage.reload(None)
+
+
+if __name__ == '__main__':
+    unittest.main()
