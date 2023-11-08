@@ -84,5 +84,7 @@ class TestHBNBCommand_help(unitteste.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_count(self):
-        h = ("Usage:
+        h = ("Usage: count <class> or <class>.count()\n    "
+                " retrieve the number of instances of a class.")
+        with patch("sys.stdout",
 
