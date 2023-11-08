@@ -92,4 +92,55 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn(user, models.storage.all().values())
         self.assertIn("State." + state.id, models.storage.all().keys())
         self.assertIn(state, models.storage.all().values())
-        self.assertIn("Place." + 
+        self.assertIn("Place." + place.id, models.storage.all().keys())
+        self.assertIn(place, models.storage.all().values())
+        self.assertIn("City." + city.id, models.storage.all().keys())
+        self.assertIn(city, models.storage.all().values())
+        self.assertIn("Review." + review.id, models.storage.all().keys())
+        self.assertIn(review, models.storage.all().values())
+        self.assertIn("Amenity." + amenity.id, models.storage.all().keys())
+        self.assertIn(amenity, models.storage.all().value())
+
+    def test_new_with_args(self):
+        with self.assertRaises(TypeError):
+            models.storage.new(BaseModel(), 1)
+
+    def test_save(self):
+        basemodel = BaseModel()
+        user = User()
+        state = State()
+        place = Place()
+        city = City()
+        review = Review()
+        amenity = Amenity()
+        models.storage.new(basemodel)
+        models.storage.new(user)
+        models.storage.new(state)
+        models.storage.new(place)
+        models.storage.new(city)
+        models.storage.new(review)
+        models.storage.new(amenity)
+        models.storage.save()
+        save_text = ""
+        with open("file.json", "r") as f:
+            save_text = f.read()
+            self.assertIn("BaseModel." + basemodel.id, save_text)
+            self.assertIn("User." + user.id, save_text)
+            self.assertIn("State." + state.id, save_text)
+            self.assertIn("Place." + place.id, save_text)
+            self.assertIn("City." + city.id, save_text)
+            self.assertIn("Review." + review.id, save_text)
+            self.assertIn("Amenity." + amenity.id, save_text)
+
+    def test_save_with_arg(self):
+        with self.assertRaises(TypeError):
+            models.storage.save(None)
+
+    def test_reload(self):
+        basemodel = BaseModel()
+        user = User()
+        state = State()
+        place = Place()
+        city = City()
+        review = Review()
+        amenity = Amenity()
