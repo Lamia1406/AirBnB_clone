@@ -61,5 +61,28 @@ class TestHBNBCommand_help(unitteste.TestCase):
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_show(self):
+        h = ("USage: show <class> <id> or <class>.show<id>)\n     "
+                "prints the string representation of an instance"
+                "base on the class name and id.")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help show"))
+            self.assertEqual(h, output.getvalue().strip())
 
+    def test_help_destroy(self):
+        h = ("Usage: destroy <class> <id> or <class>.destroy(<id>)\n"
+                "Deletes an instance based on the class name and id.")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help destroy"))
+            self.assertEqual(h, output.getvalue().strip())
+
+    def test_help_all(self):
+        h = ("Usage: all or all <class> or <class>.all()\n      "
+                "Prints all string representation of all instances"
+                "based or not on the class name.")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help all"))
+            self.assertEqual(h, output.getvalue().strip())
+
+    def test_help_count(self):
+        h = ("Usage:
 
