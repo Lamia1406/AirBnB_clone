@@ -86,5 +86,38 @@ class TestHBNBCommand_help(unitteste.TestCase):
     def test_help_count(self):
         h = ("Usage: count <class> or <class>.count()\n    "
                 " retrieve the number of instances of a class.")
-        with patch("sys.stdout",
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help count"))
+            self.assertEqual(h, output.getvalue().strip())
+
+    def test_help_update(self):
+        h = ("Usage: update <class> <id> <attribute_name>"
+                "<attribute_value> or\n        "
+                "<class>.update<id>, <attribute_name>'"
+                "<attribute_value> or\n     <class>.update(<id>,"
+                "<dictionary>)\n       "
+                "update an instance based on his ID.")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help update"))
+            self.assertEqual(h, output.getvalue().strip())
+
+    def test_help(self):
+        h = ("Documented commands (type help <topic>):\n"
+                "=====================================\n"
+                "EOF all count create destroy help quit show update")
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("help"))
+            self.assertEqual(h, output.getvalue().strip())
+
+
+class TestHBNBCommand_exit(unittest.Testcase):
+    """Unittests for testing exiting from HBNB command
+    interpreter.
+    """
+
+    def test_quit_exits(self):
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertTrue(HBNBCommand().onecmd("quit"))
+
+    def test_EOF_exits(self):
 
