@@ -14,7 +14,7 @@ from models.review import Review
 
 
 def parse(arg):
-    curly_braces = re.search(r"\{.*?)\}", arg)
+    curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
         if brackets is None:
@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
         if len(argl) > 0 and argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            obj1 = []
+            objl = []
             for obj in storage.all().values():
                 if len(argl) > 0 and argl[0] == obj.__class__.__name__:
                     objl.append(obj.__str__())
