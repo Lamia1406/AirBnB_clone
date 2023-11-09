@@ -2,19 +2,27 @@
 """defines the HBnB console."""
 import cmd
 import re
-from models import storage
-from models.base_model import BaseModel
 from shlex import split
+from models.base_model import BaseModel
 from models.user import User
 from models.state import State
-from models.place import Place
 from models.city import City
+from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
+from models import storage
 
 
 def parse(arg):
+<<<<<<< HEAD
     curly_braces = re.search(r"\{(.*?)\}", arg)
+=======
+    """Parses a command-line input, handling curly braces and square brackets.
+    Args:
+        arg (str): The input string to be parsed.
+    """
+    curly_braces = re.search(r"\{.*?\}", arg)
+>>>>>>> ccd249716e0e2646e18bcb3af61499aa7a0b91a2
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
         if brackets is None:
@@ -40,47 +48,21 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
     __classes = {
-            "BaseModel",
-            "User",
-            "City",
-            "Amenity",
-            "Place",
-            "State",
-            "Review"
+            "BaseModel": BaseModel,
+            "User": User,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "State": State,
+            "Review": Review
             }
 
     def emptyline(self):
         """do nothing upon receiving an empty line"""
         pass
 
-    def default(self, arg):
-        """default behaviour for cmd module when input is invalid."""
-        argdict = {
-                "all": self.do_all,
-                "show": self.do_show,
-                "destroy": self.do_destroy,
-                "count": self.do_count,
-                "update": self.do_update
-                }
-        match = re.search(r"\.", arg)
-        if match is not NOne:
-            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", argl[1])
-            if match is not None:
-                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in argdict.keys():
-                    call = "{} {}".format(argl[0], command[1])
-                    return argdict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
-        return False
-
     def do_quit(self, arg):
         """Quit command to exit the program."""
-        return True
-
-    def do_EOF(self, arg):
-        """EOF signal to exit the program."""
-        print("")
         return True
 
     def do_create(self, arg):
@@ -93,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
         elif argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            print(eval(argl[0])().id)
+            print(HBNBCommand.__classes[argl[0]]().id)
             storage.save()
 
     def do_show(self, arg):
@@ -147,17 +129,6 @@ class HBNBCommand(cmd.Cmd):
                     objl.append(obj.__str__())
             print(objl)
 
-    def do_count(self, arg):
-        """usage: count <class>. retrieve the number of instances
-        of a class.
-        """
-        argl = parse(arg)
-        count = 0
-        for obj in storage.all().values():
-            if argl[0] == obj.__class__.__name__:
-                count += 1
-        print(count)
-
     def do_update(self, arg):
         """Usage: update <class> <id> <attribute_name>
         <attribute_value>.
@@ -182,13 +153,9 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return False
         if len(argl) == 3:
-            try:
-                type(eval(argl[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
-
-        if len(argl) == 4:
+            print("** value missing **")
+            return False
+        if len(argl) >= 4:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             if argl[2] in obj.__class__.__dict__.keys():
                 valtype = type(obj.__class__.__dict__[argl[2]])
@@ -205,6 +172,43 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     obj.__dict__[k] = v
         storage.save()
+
+    def do_EOF(self, arg):
+        """EOF signal to exit the program."""
+        return True
+
+    def do_count(self, arg):
+        """usage: <class>.count(). retrieve the number of instances
+        of a class.
+        """
+        count = 0
+        for obj in storage.all().values():
+            if arg == obj.__class__.__name__:
+                count += 1
+        print(count)
+
+    def default(self, arg):
+        """default behaviour for cmd module when input is invalid."""
+        argdict = {
+                "all": self.do_all,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "count": self.do_count,
+                "update": self.do_update
+                }
+
+        parts = arg.split('.')
+        match = re.search(r"\.", arg)
+        if match is not None:
+            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", argl[1])
+            if match is not None:
+                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                if argl[0] in HBNBCommand.__classes:
+                    method_func = argdict[command[0]]
+                    if method_func:
+                        return method_func(argl[0])
+        print(f"*** Unknown syntax: {arg}")
 
 
 if __name__ == '__main__':

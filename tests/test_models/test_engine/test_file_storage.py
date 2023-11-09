@@ -99,7 +99,7 @@ class TestFileStorage_methods(unittest.TestCase):
         self.assertIn("Review." + review.id, models.storage.all().keys())
         self.assertIn(review, models.storage.all().values())
         self.assertIn("Amenity." + amenity.id, models.storage.all().keys())
-        self.assertIn(amenity, models.storage.all().value())
+        self.assertIn(amenity, models.storage.all().values())
 
     def test_new_with_args(self):
         with self.assertRaises(TypeError):
@@ -153,7 +153,7 @@ class TestFileStorage_methods(unittest.TestCase):
         models.storage.new(amenity)
         models.storage.save()
         models.storage.reload()
-        objs = FileStorage._Filestorage__objects
+        objs = models.storage.all()
         self.assertIn("BaseModel." + basemodel.id, objs)
         self.assertIn("User." + user.id, objs)
         self.assertIn("State." + state.id, objs)
