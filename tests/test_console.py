@@ -120,4 +120,44 @@ class TestHBNBCommand_exit(unittest.TestCase):
             self.assertTrue(HBNBCommand().onecmd("quit"))
 
     def test_EOF_exits(self):
-        pass
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertTrue(HBNBCommand().onecmd("EOF"))
+
+
+class TestHBNBCommand_create(unittest.TestCase):
+    """unittests for testing create from the HBNB command
+    interpreter.
+    """
+
+    @classmethod
+    def setUp(self):
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
+        FileStorage.__objects = {}
+
+    @classmethod
+    def tearDown(self):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
+
+    def test_create_missing_class(self):
+        core = "** class name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("create"))
+            self.assertEqual(core, output.getvalue().strip())
+
+    def test_create_invalid_class(self):
+        core = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("create Mymodel"))
+            self.assertEqual(core, output.getvalue().strip())
+
+    def test_create_invalid_syntax(self):
