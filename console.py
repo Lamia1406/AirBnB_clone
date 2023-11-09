@@ -177,14 +177,36 @@ class HBNBCommand(cmd.Cmd):
         """usage: <class>.count(). retrieve the number of instances
         of a class.
         """
-        argl = parse(arg)
         count = 0
-
         for obj in storage.all().values():
-            if argl[0] == obj.__class__.__name__:
+            if arg == obj.__class__.__name__:
                 count += 1
         print(count)
 
+    def default(self, arg):
+        """default behaviour for cmd module when input is invalid."""
+        argdict = {
+                "all": self.do_all,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "count": self.do_count,
+                "update": self.do_update
+                }
+
+        parts = arg.split('.')
+        match = re.search(r"\.", arg)
+        if match is not None:
+            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", argl[1])
+            if match is not None:
+                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                if argl[0] in HBNBCommand.__classes:
+                    method_func = argdict[command[0]]
+                    if method_func:
+                        return method_func(argl[0])
+        print(f"*** Unknown syntax: {arg}")
+
 
 if __name__ == '__main__':
+
     HBNBCommand().cmdloop()
