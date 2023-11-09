@@ -14,7 +14,10 @@ from models import storage
 
 
 def parse(arg):
+<<<<<<< HEAD
     curly_braces = re.search(r"\{(.*?)\}", arg)
+=======
+>>>>>>> bb8b0923f2a7d06bbed79c6e14dbb3685c3b8928
     """Parses a command-line input, handling curly braces and square brackets.
     Args:
         arg (str): The input string to be parsed.
