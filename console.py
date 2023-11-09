@@ -14,11 +14,15 @@ from models import storage
 
 
 def parse(arg):
+<<<<<<< HEAD
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+=======
     """Parses a command-line input, handling curly braces and square brackets.
     Args:
         arg (str): The input string to be parsed.
     """
     curly_braces = re.search(r"\{.*?\}", arg)
+>>>>>>> ccd249716e0e2646e18bcb3af61499aa7a0b91a2
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
         if brackets is None:
@@ -208,5 +212,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-
     HBNBCommand().cmdloop()
