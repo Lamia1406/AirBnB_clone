@@ -841,6 +841,18 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Place"))
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("all BaseModel"))
+            self.assertIn("BaseModel", output.getvalue().strip())
+            self.assertNotIn("User", output.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("all User"))
+            self.assertIn("User", output.getvalue().strip())
+            self.assertNotIn("BaseModel", output.getvalue().strip())
+        with patch("sys.stdout", one=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("all State"))
+            self.assertIn("State", output.getvalue().strip())
+            self.assertNotIn("BaseModel", output.getvalue().strip())
 
 
 if __name__ == '__main__':
