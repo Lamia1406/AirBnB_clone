@@ -75,19 +75,29 @@ class HBNBCommand(cmd.Cmd):
             print(HBNBCommand.__classes[argl[0]]().id)
             storage.save()
 
-    def do_show(self, args):
+    def do_show(self, arg):
         """usage: show <class> <id>. Prints the string representation
         of an instance base on the class name and id.
         """
         objdict = storage.all()
-        if len(args) == 1:
-            print("** instance id missing **")
+        if type(arg) != str:
+            argl = parse(arg[0])
+            if len(arg) > 1:
+                arg = arg[1].split('"')[1]
         else:
-            args[1] = args[1].split('"')[1]
-            if f"{args[0]}.{args[1]}" not in objdict:
-                print("** no instance found **")
-            else:
-                print(objdict["{}.{}".format(args[0], args[1])])
+            argl = parse(arg)
+            arg = arg.split(" ")[1]
+
+        if len(argl) == 0:
+            print("** class name missing **")
+        elif argl[0] not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            print("** instance id missing **")
+        elif f"{argl[0]}.{arg}" not in objdict:
+            print("** no instance found **")
+        else:
+            print(objdict["{}.{}".format(argl[0], arg)])
 
     def do_destroy(self, arg):
         """usage: destroy <class> <id>. Deletes an instance based on
