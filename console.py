@@ -75,22 +75,19 @@ class HBNBCommand(cmd.Cmd):
             print(HBNBCommand.__classes[argl[0]]().id)
             storage.save()
 
-    def do_show(self, arg):
+    def do_show(self, args):
         """usage: show <class> <id>. Prints the string representation
         of an instance base on the class name and id.
         """
-        argl = parse(arg)
         objdict = storage.all()
-        if len(argl) == 0:
-            print("** class name missing **")
-        elif argl[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
-        elif len(argl) == 1:
+        if len(args) == 1:
             print("** instance id missing **")
-        elif "{}.{}".format(argl[0], argl[1]) not in objdict:
-            print("** no instance found **")
         else:
-            print(objdict["{}.{}".format(argl[0], argl[1])])
+            args[1] = args[1].split('"')[1]
+            if f"{args[0]}.{args[1]}" not in objdict:
+                print("** no instance found **")
+            else:
+                print(objdict["{}.{}".format(args[0], args[1])])
 
     def do_destroy(self, arg):
         """usage: destroy <class> <id>. Deletes an instance based on
@@ -114,7 +111,11 @@ class HBNBCommand(cmd.Cmd):
         """usage: all <class>. Prints all string representation of
         all instances based or not on the class name.
         """
-        argl = parse(arg)
+        if type(arg) != str:
+            argl = parse(arg[0])
+
+        else:
+            argl = parse(arg)
         if len(argl) > 0 and argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
@@ -180,7 +181,7 @@ class HBNBCommand(cmd.Cmd):
         """
         count = 0
         for obj in storage.all().values():
-            if arg == obj.__class__.__name__:
+            if arg[0] == obj.__class__.__name__:
                 count += 1
         print(count)
 
@@ -195,16 +196,20 @@ class HBNBCommand(cmd.Cmd):
                 }
 
         parts = arg.split('.')
-        match = re.search(r"\.", arg)
-        if match is not None:
-            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", argl[1])
-            if match is not None:
-                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if argl[0] in HBNBCommand.__classes:
-                    method_func = argdict[command[0]]
-                    if method_func:
-                        return method_func(argl[0])
+        cls = parts[0]
+        command = parts[1].split("(")[0]
+        command_args = parts[1].split("(")[1].split(")")[0].split(",")
+        if command_args[0] == "":
+            del command_args[0]
+        for arg in command_args:
+            arg = parse(arg)
+        if cls in HBNBCommand.__classes:
+            method_func = argdict[command]
+            if method_func:
+                args = []
+                args.append(cls)
+                args += command_args
+                return method_func(args)
         print(f"*** Unknown syntax: {arg}")
 
 
