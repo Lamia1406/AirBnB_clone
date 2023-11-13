@@ -36,4 +36,10 @@ $ cat test_help | ./console.py
 ========================================  
 EOF  help  quit  
 (hbnb)  
-$  
+$
+
+## Unittests for interactive mode:
+it was tested with python3 -m unittest discover tests
+
+##Unittests for non interactive mode:
+Was tested with echo "python3 -m unittest discover tests" | bash
