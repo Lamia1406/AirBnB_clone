@@ -97,21 +97,28 @@ class HBNBCommand(cmd.Cmd):
         elif f"{argl[0]}.{arg}" not in objdict:
             print("** no instance found **")
         else:
-            print(objdict["{}.{}".format(argl[0], arg)])
+            print(objdict["{}.{}".format(argl[0], argl[1])])
 
     def do_destroy(self, arg):
         """usage: destroy <class> <id>. Deletes an instance based on
         the class name and id.
         """
-        argl = parse(arg)
         objdict = storage.all()
+        if type(arg) != str:
+            argl = parse(arg[0])
+            if len(arg) > 1:
+                arg = arg[1].split('"')[1]
+        else:
+            argl = parse(arg)
+            arg = arg.split(" ")[1]
+
         if len(argl) == 0:
             print("** class name missing **")
         elif argl[0] not in HBNBCommand.__classes:
-            print("** class doesn't exit **")
-        elif len(argl) == 1:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
             print("** instance id missing **")
-        elif "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+        elif f"{argl[0]}.{arg}" not in objdict:
             print("** no instance found **")
         else:
             del objdict["{}.{}".format(argl[0], argl[1])]
@@ -207,7 +214,7 @@ class HBNBCommand(cmd.Cmd):
 
         parts = arg.split('.')
         cls = parts[0]
-        command = parts[1].split("(")[0]
+        command = parts[1].split("()")[0]
         command_args = parts[1].split("(")[1].split(")")[0].split(",")
         if command_args[0] == "":
             del command_args[0]
