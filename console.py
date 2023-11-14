@@ -110,7 +110,8 @@ class HBNBCommand(cmd.Cmd):
                 arg = arg[1].split('"')[1]
         else:
             argl = parse(arg)
-            arg = argl[1].split('"')[0]
+            if len(argl) > 1:
+                arg = argl[1].split('"')[0]
 
         if len(argl) == 0:
             print("** class name missing **")
