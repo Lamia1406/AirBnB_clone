@@ -243,6 +243,18 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(command))
             self.assertEqual(obj.__str__(), output.getvalue().strip())
 
+    def test_show_missing_class(self):
+        correct = "** class name missing **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("show"))
+            self.assertEqual(correct, output.getvalue().strip())
+
+    def test_show_invalid_class(self):
+        correct = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as output:
+            self.assertFalse(HBNBCommand().onecmd("show Mymodel"))
+            self.assertEqual(correct, output.getvalue().strip())
+
 
 class TestHBNBCommand_destroy(unittest.TestCase):
     """Unittest for testing destroy for the HBNB
