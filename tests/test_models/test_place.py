@@ -28,5 +28,5 @@ class TestPlaceClass(unittest.TestCase):
         self.assertIsInstance(place.max_guest, int)
         self.assertIsInstance(place.price_by_night, int)
         self.assertIsInstance(place.latitude, float)
-        self.assertIsInstance(place.longtitude, float)
+        self.assertIsInstance(place.longitude, float)
         self.assertIsInstance(place.amenity_ids, list)
